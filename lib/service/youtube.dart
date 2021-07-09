@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
@@ -17,7 +16,7 @@ Future<File> localFile(String fileName) async {
 
 Future<bool> download(String id, String fileType) async {
   final YoutubeExplode yt = YoutubeExplode();
-  final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+  // final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
   var streams;
   String type;
   try {
@@ -38,18 +37,6 @@ Future<bool> download(String id, String fileType) async {
     var audioStream = yt.videos.streamsClient.get(audio);
 
     var fileName = '${video.title}_$type.${audio.container.name.toString()}'
-        .replaceAll(r'\', '')
-        .replaceAll('/', '')
-        .replaceAll('*', '')
-        .replaceAll('?', '')
-        .replaceAll('"', '')
-        .replaceAll('<', '')
-        .replaceAll('>', '')
-        .replaceAll('|', '')
-        .replaceAll(' ', '_')
-        .replaceAll('!', '');
-
-    var fileNameWithoutExtension = '${video.title}_$type'
         .replaceAll(r'\', '')
         .replaceAll('/', '')
         .replaceAll('*', '')
@@ -82,7 +69,7 @@ Future<bool> download(String id, String fileType) async {
             (rc) => print("FFmpeg process exited with rc $rc"),
           );
     } */
-    _flutterFFmpeg.cancel();
+    // _flutterFFmpeg.cancel();
     return true;
   } catch (e) {
     print(e.toString());

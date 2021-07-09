@@ -16,7 +16,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> redirectPage() async => new Future.delayed(
-        const Duration(seconds: 50),
+        const Duration(seconds: 40),
         () => Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -26,15 +26,27 @@ class _SplashScreenState extends State<SplashScreen> {
       );
   @override
   Widget build(BuildContext context) {
+    var _width = MediaQuery.of(context).size.width;
     return Scaffold(
       body: Container(
+        width: _width,
         color: Colors.red,
-        child: Center(
-          child: Image(
-            width: MediaQuery.of(context).size.width / 2,
-            height: MediaQuery.of(context).size.width / 2,
-            image: AssetImage('assets/pic/logo.png'),
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image(
+              width: _width / 1.5,
+              height: _width / 1.5,
+              image: AssetImage('assets/pic/logo.png'),
+            ),
+            Text(
+              "Specially made for Ritu by Tamzid Ahmed",
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                  color: Colors.white),
+            ),
+          ],
         ),
       ),
     );

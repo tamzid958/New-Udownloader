@@ -29,7 +29,6 @@ dependencies:
   cupertino_icons: ^1.0.3
   youtube_explode_dart: ^1.9.9
   path_provider: ^2.0.2
-  flutter_ffmpeg: ^0.4.0
 
 
 dev_dependencies:
@@ -42,6 +41,7 @@ flutter_icons:
   ios: true
   remove_alpha_ios: true
   image_path: "assets/pic/logo.png"
+  adaptive_icon_background: #FF44336
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
