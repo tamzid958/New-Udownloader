@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
       SnackBar(
         content: Text(text),
         action: SnackBarAction(
-            label: 'UNDO', onPressed: scaffold.hideCurrentSnackBar),
+            label: 'ok', onPressed: scaffold.hideCurrentSnackBar),
       ),
     );
   }
