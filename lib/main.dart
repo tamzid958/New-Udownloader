@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:udownloaderz/screen/home.dart';
+import 'package:udownloaderz/screen/splash.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }

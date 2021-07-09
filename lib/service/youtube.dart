@@ -5,8 +5,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 
 Future<String> get localPath async {
-  final dir = await getApplicationDocumentsDirectory();
-  return dir.path;
+  final dir = await getExternalStorageDirectory();
+  return dir!.path.toString();
 }
 
 Future<File> localFile(String fileName) async {
@@ -17,15 +17,12 @@ Future<File> localFile(String fileName) async {
 
 Future<bool> download(String id, String fileType) async {
   final YoutubeExplode yt = YoutubeExplode();
-  final FlutterFFmpeg _flutterFFmpeg = new FlutterFFmpeg();
-
+  final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+  var streams;
+  String type;
   try {
-    var streams;
-    String type;
-    // Get video metadata.
     Video video = await yt.videos.get(id);
 
-    // Get the video manifest.
     StreamManifest manifest = await yt.videos.streamsClient.getManifest(id);
     if (fileType == "audio") {
       streams = manifest.audioOnly;
@@ -37,11 +34,9 @@ Future<bool> download(String id, String fileType) async {
       return false;
     }
 
-    // Get the audio track with the highest bitrate.
     var audio = streams.first;
     var audioStream = yt.videos.streamsClient.get(audio);
 
-    // Compose the file name removing the unallowed characters in windows.
     var fileName = '${video.title}_$type.${audio.container.name.toString()}'
         .replaceAll(r'\', '')
         .replaceAll('/', '')
@@ -50,7 +45,21 @@ Future<bool> download(String id, String fileType) async {
         .replaceAll('"', '')
         .replaceAll('<', '')
         .replaceAll('>', '')
-        .replaceAll('|', '');
+        .replaceAll('|', '')
+        .replaceAll(' ', '_')
+        .replaceAll('!', '');
+
+    var fileNameWithoutExtension = '${video.title}_$type'
+        .replaceAll(r'\', '')
+        .replaceAll('/', '')
+        .replaceAll('*', '')
+        .replaceAll('?', '')
+        .replaceAll('"', '')
+        .replaceAll('<', '')
+        .replaceAll('>', '')
+        .replaceAll('|', '')
+        .replaceAll(' ', '_')
+        .replaceAll('!', '');
 
     var _file = await localFile(fileName);
     if (_file.existsSync()) {
@@ -64,15 +73,19 @@ Future<bool> download(String id, String fileType) async {
     }
     await output.close();
     yt.close();
-    if (type == " audio") {
+    /*  if (type == "audio") {
       final path = await localPath;
       _flutterFFmpeg
-          .execute("ffmpeg -I $path/$fileName -vn ${video.title}_$type.mp3")
-          .then((rc) => print("FFmpeg process exited with rc $rc"));
-    }
+          .execute(
+              "ffmpeg -i '$path/$fileName' -vn '$path/$fileNameWithoutExtension.mp3'")
+          .then(
+            (rc) => print("FFmpeg process exited with rc $rc"),
+          );
+    } */
+    _flutterFFmpeg.cancel();
     return true;
-  } catch (Excecption) {
-    print(Excecption.toString());
+  } catch (e) {
+    print(e.toString());
     return false;
   }
 }
